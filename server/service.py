@@ -52,6 +52,7 @@ class Service(MessagingHandler):
         self.url      = url
         self.rate     = rate
         self.address  = "TBDService"
+        self.control_address = "amq-demo.server-control.%s" % location
         self.requests = []
         self.can_process = self.rate / 2  # acceptances per half-second
         self.location = location
@@ -76,12 +77,32 @@ class Service(MessagingHandler):
         self.process_requests()
 
     def on_start(self, event):
-        self.container   = event.container
-        self.reactor     = event.reactor
-        self.conn        = self.container.connect(self.url)
-        self.timer       = self.reactor.schedule(0.5, Timer(self))
-        self.receiver    = self.container.create_receiver(self.conn, self.address)
-        self.anon_sender = self.container.create_sender(self.conn, None)
+        self.container        = event.container
+        self.reactor          = event.reactor
+        self.conn             = self.container.connect(self.url)
+        self.timer            = self.reactor.schedule(0.5, Timer(self))
+        self.receiver         = self.container.create_receiver(self.conn, self.address)
+        self.control_receiver = self.container.create_receiver(self.conn, self.control_address)
+        self.anon_sender      = self.container.create_sender(self.conn, None)
+
+    def handle_control_request(self, msg):
+        opcode = msg.properties.get("opcode")
+        rate   = int(msg.properties.get("rate", 0))
+        if opcode == "SET_RATE":
+            if rate > 0:
+                self.rate = rate
+        elif opcode == "GET_RATE":
+            pass
+        else:
+            return
+
+        if msg.reply_to:
+            response_properties["api"]      = "amq-demo.server-control.v1"
+            response_properties["opcode"]   = opcode
+            response_properties["rate"]     = self.rate
+            response_properties["location"] = self.location
+            response = Message(address=msg.reply_to, correlation_id=msg.correlation_id, properties=response_properties)
+            self.anon_sender.send(response)
 
     def on_message(self, event):
         if event.receiver == self.receiver:
@@ -90,6 +111,11 @@ class Service(MessagingHandler):
             ##
             self.requests.append(Request(self, event.delivery, event.message))
             self.process_requests()
+        elif event.receiver == self.control_receiver:
+            ##
+            ## This is a control request
+            ##
+            self.handle_control_request(event.message)
 
 try:
     ##
@@ -98,7 +124,8 @@ try:
     ##
     host = os.getenv("MESSAGING_SERVICE_HOST", "127.0.0.1")
     location = os.getenv("AMQ_LOCATION_KEY", "On-Stage")
-    Container(Service(host, location, 50)).run()
+    initial_rate = int(os.getenv("AMQ_INITIAL_RATE", "200"))
+    Container(Service(host, location, initial_rate)).run()
 except KeyboardInterrupt: pass
 
 

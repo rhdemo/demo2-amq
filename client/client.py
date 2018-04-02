@@ -79,7 +79,7 @@ class Client(MessagingHandler):
             if sum(self.locations[loc]) == 0:
                 self.locations.pop(loc)
         if self.stats_sender.credit > 0:
-            msg = Message(body=json.dumps(stat_map, sort_keys=True))
+            msg = Message(properties={'api':'amq-demo.server-stats.v1'}, body=json.dumps(stat_map, sort_keys=True))
             dlv = self.stats_sender.send(msg)
             dlv.settle()
         
@@ -94,7 +94,7 @@ class Client(MessagingHandler):
                   u'outstanding': self.outstanding,
                   u'rate': int(rate)}
         if self.report_sender.credit > 0:
-            msg = Message(body=report)
+            msg = Message(properties={'api': 'amq-demo.client-report.v1'}, body=report)
             dlv = self.report_sender.send(msg)
             dlv.settle()
         self.send_stats_update()
@@ -120,24 +120,23 @@ class Client(MessagingHandler):
         self.send()
 
     def on_message(self, event):
-        if event.receiver == self.control_receiver:
-            body = event.message.body
-            if body.__class__ == dict and 'opcode' in body:
-                opcode = body['opcode']
+        try:
+            if event.receiver == self.control_receiver:
+                props = event.message.properties
+                opcode = props.get('opcode')
+                value  = int(props.get('value', 0))
                 if opcode == 'INC_CAPACITY':
-                    if 'value' in body:
-                        value = body['value']
-                        self.capacity += int(value)
+                    self.capacity += value
                 if opcode == 'DEC_CAPACITY':
-                    if 'value' in body:
-                        value = body['value']
-                        self.capacity -= int(value)
-                        if self.capacity < 0:
-                            self.capacity = 0
-        elif event.receiver == self.receiver:
-            ap = event.message.properties
-            if 'location' in ap:
-                self.count_received(ap['location'])
+                    self.capacity -= value
+                    if self.capacity < 0:
+                        self.capacity = 0
+            elif event.receiver == self.receiver:
+                ap = event.message.properties
+                if 'location' in ap:
+                    self.count_received(ap['location'])
+        except:
+            pass
 
     def on_accepted(self, event):
         if event.sender == self.service_sender:

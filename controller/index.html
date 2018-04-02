@@ -23,19 +23,32 @@
     <table border="1">
       <tr><th>Capacity</th><th>Outstanding</th><th>Rate</th><th colspan="2">Controls</th></tr>
       <tr><td id="cap">0</td><td id="outst">0</td><td id="rate">0</td>
-        <td><button type="button" onclick="up_ten()">Up 10</button></td>
         <td><button type="button" onclick="down_ten()">Down 10</button></td>
+        <td><button type="button" onclick="up_ten()">Up 10</button></td>
       </tr>
     </table>
   </center>    
+
+  <hr />
+  <center><b>Server Rate Limiting</b></center>
+
+  <center>
+    <table id="serverLimits" border="1">
+      <tr><th>Server Location</th><th colspan="2">Controls</th></tr>
+      <tr><td>AWS</td>
+        <td><button type="button" onclick="aws_limit(5)">Slow (5)</button></td>
+        <td><button type="button" onclick="aws_limit(500)">Fast (500)</button></td>
+       </tr>
+    </table>
+  </center>
 
   <script>
 function update_stats(data) {
     var rateTable = document.getElementById("rates");
 
-    rows = rateTable.rows
-    cells = rows[0].cells
-    cells[0].innerHTML = data
+    rows = rateTable.rows;
+    cells = rows[0].cells;
+    cells[0].innerHTML = data;
 }
 
 function update_report(data) {
@@ -49,17 +62,24 @@ function update_report(data) {
 }
 
 function up_ten() {
-    body = {"opcode": "INC_CAPACITY", "value": 10};
-    control_tx.send({body:body});
+    props = {"api": "amq-demo.client-control.v1", "opcode": "INC_CAPACITY", "value": 10};
+    control_tx.send({application_properties:props, body:{}});
 }
 
 function down_ten() {
-    body = {"opcode": "DEC_CAPACITY", "value": 10};
-    control_tx.send({body:body});
+    props = {"api": "amq-demo.client-control.v1", "opcode": "DEC_CAPACITY", "value": 10};
+    control_tx.send({application_properties:props, body:{}});
+}
+
+function aws_limit(rate) {
+    if (aws_tx.credit > 0) {
+        props = {"api": "amq-demo.server-control.v1", "opcode": "SET_RATE", "rate": rate};
+        aws_tx.send({application_properties:props, body:{}});
+    }
 }
 
 var client = require("rhea");
-client.on("message", function (context) {
+client.on("message", function(context) {
     if (context.receiver == stat_rx)
         update_stats(context.message.body);
     if (context.receiver == report_rx)
@@ -70,13 +90,13 @@ rateTable = document.getElementById("rates")
 row = rateTable.insertRow()
 row.insertCell().innerHTML = "No Traffic"
 
-
 var server = "ws://127.0.0.1:8080";
 var ws = client.websocket_connect(WebSocket);
 var connection = client.connect({connection_details:ws(server, ["binary"]), reconnect:true});
-var stat_rx = connection.open_receiver("multicast.amq-demo-stats");
-var report_rx = connection.open_receiver("multicast.amq-demo-report");
+var stat_rx    = connection.open_receiver("multicast.amq-demo-stats");
+var report_rx  = connection.open_receiver("multicast.amq-demo-report");
 var control_tx = connection.open_sender("amq-demo-control");
+var aws_tx     = connection.open_sender("amq-demo.server-control.AWS");
  
   </script>
 </body>
