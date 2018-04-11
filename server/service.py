@@ -51,7 +51,7 @@ class Service(MessagingHandler):
         super(Service, self).__init__(auto_accept = False)
         self.url      = url
         self.rate     = rate
-        self.address  = "TBDService"
+        self.address  = "FraudDetection/v1"
         self.control_address = "amq-demo.server-control.%s" % location
         self.requests = []
         self.can_process = self.rate / 2  # acceptances per half-second

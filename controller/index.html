@@ -21,10 +21,12 @@
 
   <center>
     <table border="1">
-      <tr><th>Capacity</th><th>Outstanding</th><th>Rate</th><th colspan="2">Controls</th></tr>
+      <tr><th>Threads</th><th>Outstanding</th><th>Rate</th><th colspan="4">Controls</th></tr>
       <tr><td id="cap">0</td><td id="outst">0</td><td id="rate">0</td>
-        <td><button type="button" onclick="down_ten()">Down 10</button></td>
-        <td><button type="button" onclick="up_ten()">Up 10</button></td>
+        <td><button type="button" onclick="down(10)">Down 10</button></td>
+        <td><button type="button" onclick="up(10)">Up 10</button></td>
+        <td><button type="button" onclick="down(1)">Down 1</button></td>
+        <td><button type="button" onclick="up(1)">Up 1</button></td>
       </tr>
     </table>
   </center>    
@@ -36,8 +38,8 @@
     <table id="serverLimits" border="1">
       <tr><th>Server Location</th><th colspan="2">Controls</th></tr>
       <tr><td>AWS</td>
-        <td><button type="button" onclick="aws_limit(5)">Slow (5)</button></td>
-        <td><button type="button" onclick="aws_limit(500)">Fast (500)</button></td>
+        <td><button type="button" onclick="aws_limit(10)">Slow (10)</button></td>
+        <td><button type="button" onclick="aws_limit(250)">Fast (250)</button></td>
        </tr>
     </table>
   </center>
@@ -48,7 +50,7 @@ function update_stats(data) {
 
     rows = rateTable.rows;
     cells = rows[0].cells;
-    cells[0].innerHTML = data;
+    cells[0].innerHTML = JSON.stringify(data);
 }
 
 function update_report(data) {
@@ -61,13 +63,13 @@ function update_report(data) {
     rate.innerHTML = data.rate;
 }
 
-function up_ten() {
-    props = {"api": "amq-demo.client-control.v1", "opcode": "INC_CAPACITY", "value": 10};
+function up(delta) {
+    props = {"api": "amq-demo.client-control.v1", "opcode": "INC_CAPACITY", "value": delta};
     control_tx.send({application_properties:props, body:{}});
 }
 
-function down_ten() {
-    props = {"api": "amq-demo.client-control.v1", "opcode": "DEC_CAPACITY", "value": 10};
+function down(delta) {
+    props = {"api": "amq-demo.client-control.v1", "opcode": "DEC_CAPACITY", "value": delta};
     control_tx.send({application_properties:props, body:{}});
 }
 

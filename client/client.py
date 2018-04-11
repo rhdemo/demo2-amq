@@ -25,7 +25,6 @@ from proton import Message
 from proton.handlers import MessagingHandler
 from proton.reactor import Container, DynamicNodeProperties
 import os
-import json
 
 class Timer(object):
     def __init__(self, parent):
@@ -43,7 +42,7 @@ class Client(MessagingHandler):
         self.report_address  = "multicast.amq-demo-report"
         self.stats_address   = "multicast.amq-demo-stats"
         self.control_address = "amq-demo-control"
-        self.service_address = "TBDService"
+        self.service_address = "FraudDetection/v1"
         self.capacity = 0
         self.outstanding = 0
         self.samples = []
@@ -79,7 +78,7 @@ class Client(MessagingHandler):
             if sum(self.locations[loc]) == 0:
                 self.locations.pop(loc)
         if self.stats_sender.credit > 0:
-            msg = Message(properties={'api':'amq-demo.server-stats.v1'}, body=json.dumps(stat_map, sort_keys=True))
+            msg = Message(properties={'api':'amq-demo.server-stats.v1'}, body=stat_map)
             dlv = self.stats_sender.send(msg)
             dlv.settle()
         
