@@ -49,6 +49,8 @@ class Client(MessagingHandler):
         self.max_samples = 4
         self.request_count = 0
         self.locations = {}
+        self.receiver = None
+        self.service_sender = None
 
     def send(self):
         if self.outstanding >= self.capacity:
@@ -104,16 +106,19 @@ class Client(MessagingHandler):
         self.conn      = event.container.connect(self.url)
 
     def on_connection_opened(self, event):
-        self.receiver  = event.container.create_receiver(self.conn, None, dynamic=True)
-        self.control_receiver = event.container.create_receiver(self.conn, self.control_address)
+        if self.receiver == None:
+            self.receiver         = event.container.create_receiver(self.conn, None, dynamic=True)
+            self.control_receiver = event.container.create_receiver(self.conn, self.control_address)
+        self.outstanding      = 0
 
     def on_link_opened(self, event):
         if event.receiver == self.receiver:
             self.reply_to = event.receiver.remote_source.address
-            self.service_sender = event.container.create_sender(self.conn, self.service_address)
-            self.report_sender  = event.container.create_sender(self.conn, self.report_address)
-            self.stats_sender   = event.container.create_sender(self.conn, self.stats_address)
-            self.timer    = self.reactor.schedule(0.5, Timer(self))
+            if self.service_sender == None:
+                self.service_sender = event.container.create_sender(self.conn, self.service_address)
+                self.report_sender  = event.container.create_sender(self.conn, self.report_address)
+                self.stats_sender   = event.container.create_sender(self.conn, self.stats_address)
+                self.timer          = self.reactor.schedule(0.5, Timer(self))
 
     def on_sendable(self, event):
         self.send()
