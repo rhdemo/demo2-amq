@@ -26,12 +26,13 @@ openssl req -key ca.key -new -x509 -days 99999 -sha256 -out ca.crt -passin pass:
 
 
 for L in onstage azure aws; do
-  openssl genrsa -aes256 -passout pass:$L-password -out tls.$L.key 4096
+  echo "$L-password" | cat > tls.$L.pw
+  openssl genrsa -aes256 -passout file:tls.$L.pw -out tls.$L.key 4096
 done
 
-openssl req -new -key tls.onstage.key -passin pass:onstage-password -out tls.onstage.csr -subj "/C=US/ST=CA/L=San Francisco/O=Red Hat Inc./CN=inter-router-demo2-amq.apps.summit.sysdeseng.com"
-openssl req -new -key tls.azure.key -passin pass:azure-password -out tls.azure.csr -subj "/C=US/ST=TX/L=Azure/O=Red Hat Inc./CN=inter-router-demo2-amq.apps.summit-azr.sysdeseng.com"
-openssl req -new -key tls.aws.key -passin pass:aws-password -out tls.aws.csr -subj "/C=US/ST=OH/L=AWS/O=Red Hat Inc./CN=inter-router-demo2-amq.apps.summit-aws.sysdeseng.com"
+openssl req -new -key tls.onstage.key -passin file:tls.onstage.pw -out tls.onstage.csr -subj "/C=US/ST=CA/L=San Francisco/O=Red Hat Inc./CN=inter-router-demo2-amq.apps.summit.sysdeseng.com"
+openssl req -new -key tls.azure.key -passin file:tls.azure.pw -out tls.azure.csr -subj "/C=US/ST=TX/L=Azure/O=Red Hat Inc./CN=inter-router-demo2-amq.apps.summit-azr.sysdeseng.com"
+openssl req -new -key tls.aws.key -passin file:tls.aws.pw -out tls.aws.csr -subj "/C=US/ST=OH/L=AWS/O=Red Hat Inc./CN=inter-router-demo2-amq.apps.summit-aws.sysdeseng.com"
 
 for L in onstage azure aws; do
   openssl x509 -req -in tls.$L.csr -CA ca.crt -CAkey ca.key -CAcreateserial -days 9999 -out tls.$L.crt -passin pass:ca-password

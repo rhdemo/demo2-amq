@@ -1,6 +1,6 @@
 router {
     mode: interior
-    id: AWS
+    id: ${AMQ_LOCATION_KEY}
 }
 
 listener {
