@@ -30,6 +30,9 @@ spec:
     spec:
       containers:
       - name: qdr
+        env:
+        - name: AMQ_LOCATION_KEY
+          value: AZR
         image: gordons/qdr:latest
         imagePullPolicy: IfNotPresent
         ports:
