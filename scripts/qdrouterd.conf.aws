@@ -1,6 +1,6 @@
 router {
     mode: interior
-    id: AWS.${HOSTNAME}
+    id: AWS
 }
 
 listener {

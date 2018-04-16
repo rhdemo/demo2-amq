@@ -1,6 +1,6 @@
 router {
     mode: interior
-    id: AZURE.${HOSTNAME}
+    id: AZURE
 }
 
 listener {
