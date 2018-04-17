@@ -1,0 +1,2 @@
+./setup-azure-ic-only
+oc apply -f server.azure.yaml

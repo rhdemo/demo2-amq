@@ -1,0 +1,2 @@
+./setup-aws-ic-only
+oc apply -f server.aws.yaml
