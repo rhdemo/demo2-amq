@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: messaging
   labels:
-    app: qdr
+    app: amq-interconnect
   annotations:
     service.alpha.openshift.io/serving-cert-secret-name: qdr-external-cert
 spec:
@@ -18,18 +18,18 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: qdr
+  name: amq-interconnect
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: qdr
+        app: amq-interconnect
         version: v1
         type: qdrouterd
     spec:
       containers:
-      - name: qdr
+      - name: amq-interconnect
         env:
         - name: AMQ_LOCATION_KEY
           value: AWS
@@ -56,7 +56,7 @@ apiVersion: v1
 kind: Route
 metadata:
   labels:
-    app: qdr
+    app: amq-interconnect
   name: inter-router
 spec:
   host: inter-router-demo2-amq.apps.summit-aws.sysdeseng.com
