@@ -103,6 +103,4 @@ ENV/
 controller/node_modules/
 
 # Generated TLS certificates and keys
-scripts/tls-certs/*.crt
-scripts/tls-certs/*.key
-scripts/tls-certs/*.pw
+scripts/tls-certs
