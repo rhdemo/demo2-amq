@@ -19,7 +19,7 @@ each public cluster and running the `setup-*-all` script.  Use the `Copy Login
 Command` feature on the OpenShift Web UI to obtain the correct login command.
 
 <center>
-![OpenShift UI Image](images/CopyLogin.png)
+<img src="images/CopyLogin.png" />
 </center>
 
 ```
