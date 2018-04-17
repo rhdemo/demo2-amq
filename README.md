@@ -4,8 +4,10 @@ Workload, Tools, and scripts for the AMQ section of Demo-2
 ## Setting up the Demo
 
 The first time you set up this demo, you must first generate the TLS
-certificates and keys that will be used to secure the inter-cluster
-connections.
+certificate authority, certificates, and keys that will be used to secure the
+inter-cluster connections.
+
+Note that this script uses `openssl` to generate keys and certificates.
 
 ```
 $ cd scripts
@@ -13,8 +15,12 @@ $ ./generate-certs
 ```
 
 You can now deploy the public-cloud footprints by logging into OpenShift for
-each public cluster and running the `setup-*-all` script.  Use The `Copy Login
+each public cluster and running the `setup-*-all` script.  Use the `Copy Login
 Command` feature on the OpenShift Web UI to obtain the correct login command.
+
+<center>
+![OpenShift UI Image](images/CopyLogin.png)
+</center>
 
 ```
 $ oc login https://openshift-master.summit-aws.sysdeseng.com --token=...
