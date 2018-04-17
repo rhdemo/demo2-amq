@@ -32,7 +32,7 @@ spec:
       - name: qdr
         env:
         - name: AMQ_LOCATION_KEY
-          value: AZR
+          value: AWS
         image: gordons/qdr:latest
         imagePullPolicy: IfNotPresent
         ports:
@@ -51,3 +51,21 @@ spec:
       - name: internal-certs
         secret:
           secretName: qdr-internal-cert
+---
+apiVersion: v1
+kind: Route
+metadata:
+  labels:
+    app: qdr
+  name: inter-router
+spec:
+  host: inter-router-demo2-amq.apps.summit-aws.sysdeseng.com
+  port:
+    targetPort: inter-router
+  tls:
+    termination: passthrough
+  to:
+    kind: Service
+    name: messaging
+    weight: 100
+  wildcardPolicy: None
