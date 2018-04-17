@@ -12,8 +12,8 @@ $ cd scripts
 $ ./generate-certs
 ```
 
-You can now deploy the public-cloud footprints by logging into OpehShift for
-each public cluster and running the `setup-*-all` script.  Use THe `Copy Login
+You can now deploy the public-cloud footprints by logging into OpenShift for
+each public cluster and running the `setup-*-all` script.  Use The `Copy Login
 Command` feature on the OpenShift Web UI to obtain the correct login command.
 
 ```
