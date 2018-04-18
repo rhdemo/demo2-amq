@@ -1,2 +1,2 @@
 ./setup-onstage-ic-only
-oc apply -f server.onstage.yaml
+oc apply -f apps.onstage.yaml

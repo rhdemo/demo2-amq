@@ -18,5 +18,5 @@ spec:
           value: AWS
         - name: AMQ_INITIAL_RATE
           value: "10"
-        image: tedross/amq-demo-server:0.3
+        image: tedross/amq-demo-server:0.4
         imagePullPolicy: IfNotPresent
