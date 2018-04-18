@@ -25,6 +25,14 @@ router {
     id: ${AMQ_LOCATION_KEY}
 }
 
+sslProfile {
+   name: TLS
+   certFile: /etc/qpid-dispatch-certs/internal/tls.crt
+   keyFile: /etc/qpid-dispatch-certs/internal/tls.key
+   passwordFile: /etc/qpid-dispatch-certs/internal/tls.pw
+   certDb: /etc/qpid-dispatch-certs/internal/ca.crt
+}
+
 listener {
     host: 0.0.0.0
     port: amqp
@@ -34,18 +42,18 @@ listener {
 
 listener {
     host: 0.0.0.0
+    port: 5671
+    authenticatePeer: no
+    saslMechanisms: ANONYMOUS
+    sslProfile: TLS
+}
+
+listener {
+    host: 0.0.0.0
     port: 8080
     authenticatePeer: no
     http: yes
     httpRoot: /home/ross/git/ErnieAllen/qpid-dispatch/console/stand-alone
-}
-
-sslProfile {
-   name: TLS
-   certFile: /etc/qpid-dispatch-certs/internal/tls.crt
-   keyFile: /etc/qpid-dispatch-certs/internal/tls.key
-   passwordFile: /etc/qpid-dispatch-certs/internal/tls.pw
-   certDb: /etc/qpid-dispatch-certs/internal/ca.crt
 }
 
 connector {

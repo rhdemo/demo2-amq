@@ -8,10 +8,12 @@ metadata:
     service.alpha.openshift.io/serving-cert-secret-name: qdr-external-cert
 spec:
   ports:
+  - port: 5671
+    name: amqps
   - port: 5672
     name: amqp
-  - port: 55672
-    name: inter-router
+  - port: 8080
+    name: console
   selector:
     type: qdrouterd
 ---
@@ -51,3 +53,33 @@ spec:
       - name: internal-certs
         secret:
           secretName: qdr-internal-cert
+---
+apiVersion: v1
+kind: Route
+metadata:
+  name: amqps
+spec:
+  host: amqps-demo2-amq.127.0.0.1.nip.io
+  port:
+    targetPort: amqps
+  tls:
+    termination: passthrough
+  to:
+    kind: Service
+    name: messaging
+    weight: 100
+  wildcardPolicy: None
+---
+apiVersion: v1
+kind: Route
+metadata:
+  name: console
+spec:
+  host: console-demo2-amq.127.0.0.1.nip.io
+  port:
+    targetPort: console
+  to:
+    kind: Service
+    name: messaging
+    weight: 100
+  wildcardPolicy: None
