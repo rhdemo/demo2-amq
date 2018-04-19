@@ -35,7 +35,7 @@ spec:
         env:
         - name: AMQ_LOCATION_KEY
           value: ONSTAGE
-        image: gordons/qdr:latest
+        image: tedross/qpid-dispatch:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5672

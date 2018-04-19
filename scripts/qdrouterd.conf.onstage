@@ -53,7 +53,7 @@ listener {
     port: 8080
     authenticatePeer: no
     http: yes
-    httpRoot: /home/ross/git/ErnieAllen/qpid-dispatch/console/stand-alone
+    httpRoot: /stand-alone
 }
 
 connector {
