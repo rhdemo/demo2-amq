@@ -92,9 +92,23 @@ rateTable = document.getElementById("rates")
 row = rateTable.insertRow()
 row.insertCell().innerHTML = "No Traffic"
 
-var server = "ws://127.0.0.1:8080";
-var ws = client.websocket_connect(WebSocket);
-var connection = client.connect({connection_details:ws(server, ["binary"]), reconnect:true});
+//
+// Determine the Websockets URL to be used in the connection to the network
+//
+var proto    = window.location.protocol;
+var hostPort = window.location.hostname + ":" + window.location.port;
+server       = (proto == "https" ? "wss://" : "ws://") + hostPort;
+console.info("Websocket URL: " + server);
+
+var ws         = client.websocket_connect(WebSocket);
+var connection = client.connect({
+    connection_details:ws(server, ["binary"]),
+    reconnect:true,
+    hostname:window.location.hostname,
+    properties:{
+        product:"Red Hat Summit 2018 - Demo 2 Controller",
+        version:"1.0.0"
+    }});
 var stat_rx    = connection.open_receiver("multicast.amq-demo-stats");
 var report_rx  = connection.open_receiver("multicast.amq-demo-report");
 var control_tx = connection.open_sender("amq-demo-control");

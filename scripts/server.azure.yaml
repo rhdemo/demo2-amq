@@ -18,5 +18,5 @@ spec:
           value: AZR
         - name: AMQ_INITIAL_RATE
           value: "500"
-        image: tedross/amq-demo-server:0.4
+        image: tedross/amq-demo-server:0.5
         imagePullPolicy: IfNotPresent

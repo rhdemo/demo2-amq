@@ -18,7 +18,7 @@ spec:
           value: ONSTAGE
         - name: AMQ_INITIAL_RATE
           value: "200"
-        image: tedross/amq-demo-server:0.4
+        image: tedross/amq-demo-server:0.5
         imagePullPolicy: IfNotPresent
 ---
 apiVersion: extensions/v1beta1
@@ -39,5 +39,5 @@ spec:
         env:
         - name: AMQ_LOCATION_KEY
           value: ONSTAGE
-        image: tedross/amq-demo-client:0.4
+        image: tedross/amq-demo-client:0.5
         imagePullPolicy: IfNotPresent

@@ -164,5 +164,7 @@ try:
     ## Fall back to 127.0.0.1 (loopback)
     ##
     host = os.getenv("MESSAGING_SERVICE_HOST", "127.0.0.1")
-    Container(Client(host)).run()
+    container = Container(Client(host))
+    container.container_id = os.getenv("HOSTNAME", "client")
+    container.run()
 except KeyboardInterrupt: pass

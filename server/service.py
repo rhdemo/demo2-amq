@@ -125,7 +125,9 @@ try:
     host = os.getenv("MESSAGING_SERVICE_HOST", "127.0.0.1")
     location = os.getenv("AMQ_LOCATION_KEY", "On-Stage")
     initial_rate = int(os.getenv("AMQ_INITIAL_RATE", "200"))
-    Container(Service(host, location, initial_rate)).run()
+    container = Container(Service(host, location, initial_rate))
+    container.container_id = os.getenv("HOSTNAME", "Service")
+    container.run()
 except KeyboardInterrupt: pass
 
 
