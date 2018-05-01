@@ -59,7 +59,7 @@ kind: Route
 metadata:
   name: amqps
 spec:
-  host: amqps-demo2-amq.127.0.0.1.nip.io
+  host: amqps-demo2-amq.apps.summit-onstage.sysdeseng.com
   port:
     targetPort: amqps
   tls:
@@ -75,7 +75,7 @@ kind: Route
 metadata:
   name: console
 spec:
-  host: console-demo2-amq.127.0.0.1.nip.io
+  host: console-demo2-amq.apps.summit-onstage.sysdeseng.com
   port:
     targetPort: console
   to:
