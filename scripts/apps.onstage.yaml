@@ -41,3 +41,48 @@ spec:
           value: ONSTAGE
         image: tedross/amq-demo-client:0.5
         imagePullPolicy: IfNotPresent
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: demo-console
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: demo-console
+        version: v1
+        type: demo-console
+    spec:
+      containers:
+      - name: demo-console
+        image: tedross/demo-console:1.1
+        imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-console
+  labels:
+    app: demo-console
+spec:
+  ports:
+  - port: 8080
+    name: demo-console
+  selector:
+    type: demo-console
+---
+apiVersion: v1
+kind: Route
+metadata:
+  name: demo-console
+spec:
+  host: demo-console-demo2-amq.apps.summit-onstage.sysdeseng.com
+  port:
+    targetPort: demo-console
+  to:
+    kind: Service
+    name: demo-console
+    weight: 100
+  wildcardPolicy: None
