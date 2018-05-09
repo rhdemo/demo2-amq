@@ -38,11 +38,6 @@ Please note that you may use `setup-*-ic-only` to deploy only the AMQ
 Interconnect network without the services for this demo.  This might be useful
 if you wish to use the network for a different distributed service deployment.
 
-## Demo Script
-
-[Demo Script - Version 1](https://docs.google.com/document/d/1Xz_aSJAs6kbIBWFiZ4SnaCFhto1BfnMU5wXW6eqn0rs/edit?usp=sharing)
-[Demo Script - version 2](https://docs.google.com/document/d/1sJJ_twc4jhZGbBAHpVrON2gG3UuZucrUVxLMJ1Eluds/edit?usp=sharing)
-
 ## Components of the Demo
 
  - Client
