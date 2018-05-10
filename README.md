@@ -14,8 +14,8 @@ $ cd scripts
 $ ./generate-certs
 ```
 
-You can now deploy the public-cloud footprints by logging into OpenShift for
-each public cluster and running the `setup-*-all` script.  Use the `Copy Login
+You can now deploy the three footprints by logging into OpenShift for
+each cluster and running the `setup-*-all` script.  Use the `Copy Login
 Command` feature on the OpenShift Web UI to obtain the correct login command.
 
 <center>
@@ -25,29 +25,23 @@ Command` feature on the OpenShift Web UI to obtain the correct login command.
 ```
 $ oc login https://openshift-master.summit-aws.sysdeseng.com --token=...
 $ ./setup-aws-all
-```
 
-and
-
-```
 $ oc login https://openshift-master.summit-azr.sysdeseng.com --token=...
 $ ./setup-azure-all
+
+$ oc login https://openshift-master.summit-onstage.sysdeseng.com --token=...
+$ ./setup-onstage-all
 ```
 
 Please note that you may use `setup-*-ic-only` to deploy only the AMQ
 Interconnect network without the services for this demo.  This might be useful
 if you wish to use the network for a different distributed service deployment.
 
-## Components of the Demo
+Once the three projects are running on their respective clusters, you
+may use the following URLs to access the console and the
+demo-controller:
 
- - Client
- - Server
- - Controller
+<https://demo-console-demo2-amq.apps.summit-onstage.sysdeseng.com>
 
-## APIs used in the Demo
+<https://console-demo2-amq.apps.summit-onstage.sysdeseng.com/controller.html>
 
- - FraudDetection.v1
- - amq-demo.server-control/v1
- - amq-demo.server-stats/v1
- - amq-demo.client-report/v1
- - amq-demo.client-control/v1
