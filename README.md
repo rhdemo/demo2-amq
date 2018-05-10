@@ -41,7 +41,13 @@ Once the three projects are running on their respective clusters, you
 may use the following URLs to access the console and the
 demo-controller:
 
-<https://demo-console-demo2-amq.apps.summit-onstage.sysdeseng.com>
+<http://demo-console-demo2-amq.apps.summit-onstage.sysdeseng.com>
 
-<https://console-demo2-amq.apps.summit-onstage.sysdeseng.com/controller.html>
+<http://console-demo2-amq.apps.summit-onstage.sysdeseng.com/controller.html>
+
+To log into the console, use the address
+`console-demo2-amq.apps.summit-onstage.sysdeseng.com`
+and port 80.
+
+
 
