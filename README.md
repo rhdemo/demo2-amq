@@ -3,7 +3,7 @@ Workload, Tools, and scripts for the AMQ section of Demo-2
 
 ## Setting up the Demo
 
-The first time you set up this demo, you must first generate the TLS
+The first time you set up this demo, you must generate the TLS
 certificate authority, certificates, and keys that will be used to secure the
 inter-cluster connections.
 
