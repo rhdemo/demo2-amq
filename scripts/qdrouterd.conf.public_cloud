@@ -22,9 +22,9 @@ listener {
 sslProfile {
    name: ssl_internal_details
    certFile: /etc/qpid-dispatch-certs/internal/tls.crt
-   keyFile: /etc/qpid-dispatch-certs/internal/tls.key
+   privateKeyFile: /etc/qpid-dispatch-certs/internal/tls.key
    passwordFile: /etc/qpid-dispatch-certs/internal/tls.pw
-   certDb: /etc/qpid-dispatch-certs/internal/ca.crt
+   caCertFile: /etc/qpid-dispatch-certs/internal/ca.crt
 }
 
 address {

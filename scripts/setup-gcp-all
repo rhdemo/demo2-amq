@@ -1,4 +1,4 @@
-./setup-azure-ic-only
+./setup-gcp-ic-only
 oc apply -f workload.yaml
 oc apply -f ../worker/.openshiftio/application.yaml
 oc new-app --template=vertx-messaging-worker \

@@ -1,1 +1,0 @@
-oc cluster up --public-hostname=openshift-master.summit-onstage.sysdeseng.com --routing-suffix=apps.summit-onstage.sysdeseng.com

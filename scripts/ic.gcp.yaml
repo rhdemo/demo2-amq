@@ -32,7 +32,7 @@ spec:
       - name: amq-interconnect
         env:
         - name: AMQ_LOCATION_KEY
-          value: AWS
+          value: GCP
         image: tedross/qpid-dispatch-router:1.2.0
         imagePullPolicy: Always
         ports:
@@ -59,7 +59,7 @@ metadata:
     app: amq-interconnect
   name: inter-router
 spec:
-  host: inter-router-demo2-amq.${AWS_SUFFIX}
+  host: inter-router-demo2-amq.${GCP_SUFFIX}
   port:
     targetPort: inter-router
   tls:

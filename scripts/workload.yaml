@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: workload-generator
+spec:
+  replicas: 0
+  template:
+    metadata:
+      labels:
+        app: workload-generator
+        version: v1
+        type: server
+    spec:
+      containers:
+      - name: client-load
+        image: tedross/demo2-messaging-load:1.0
+        imagePullPolicy: IfNotPresent

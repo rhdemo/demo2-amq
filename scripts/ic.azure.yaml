@@ -33,8 +33,8 @@ spec:
         env:
         - name: AMQ_LOCATION_KEY
           value: AZR
-        image: tedross/qpid-dispatch:latest
-        imagePullPolicy: IfNotPresent
+        image: tedross/qpid-dispatch-router:1.2.0
+        imagePullPolicy: Always
         ports:
         - containerPort: 5672
           protocol: TCP
@@ -59,7 +59,7 @@ metadata:
     app: amq-interconnect
   name: inter-router
 spec:
-  host: inter-router-demo2-amq.apps.summit-azr.sysdeseng.com
+  host: inter-router-demo2-amq.${AZURE_SUFFIX}
   port:
     targetPort: inter-router
   tls:
