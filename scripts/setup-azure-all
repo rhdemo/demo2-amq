@@ -2,7 +2,7 @@
 oc apply -f workload.yaml
 oc apply -f ../worker/.openshiftio/application.yaml
 oc new-app --template=vertx-messaging-worker \
-  -p SOURCE_REPOSITORY_URL=https://github.com/ted-ross/demo2-amq \
-  -p SOURCE_REPOSITORY_REF=DevNationLive \
+  -p SOURCE_REPOSITORY_URL=https://github.com/rhdemo/demo2-amq \
+  -p SOURCE_REPOSITORY_REF=master \
   -p SOURCE_REPOSITORY_DIR=worker
 
